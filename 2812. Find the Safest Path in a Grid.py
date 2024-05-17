@@ -1,0 +1,49 @@
+from typing import List
+from collections import deque
+import heapq
+
+class Solution:
+    def maximumSafenessFactor(self, grid: List[List[int]]) -> int:
+        N = len(grid)
+
+        def in_bounds(r, c):
+            return 0 <= r < N and 0 <= c < N
+
+        def precompute():
+            q = deque()
+            min_dist = {}
+            for r in range(N):
+                for c in range(N):
+                    if grid[r][c] == 1:
+                        q.append([r, c, 0])
+                        min_dist[(r, c)] = 0
+            while q:  # giving values to each column based on closeness to thief - bfs
+                r, c, dist = q.popleft()
+                nei = [[r + 1, c], [r - 1, c], [r, c + 1], [r, c - 1]]
+                for r2, c2 in nei:
+                    if in_bounds(r2, c2) and (r2, c2) not in min_dist:
+                        min_dist[(r2, c2)] = dist + 1
+                        q.append([r2, c2, dist + 1])
+            return min_dist        
+
+        min_dist = precompute()  # copied min_dist set to another one
+        maxheap = [(-min_dist[(0, 0)], 0, 0)]  # dist, r, c
+        visit = set()
+        visit.add((0, 0))
+        while maxheap:
+            dist, r, c = heapq.heappop(maxheap)
+            dist = -dist
+            if (r, c) == (N - 1, N - 1):
+                return dist
+
+            nei = [[r + 1, c], [r - 1, c], [r, c + 1], [r, c - 1]]
+            for r2, c2 in nei:
+                if in_bounds(r2, c2) and (r2, c2) not in visit:
+                    visit.add((r2, c2))
+                    dist2 = -min(dist, min_dist[(r2, c2)])
+                    heapq.heappush(maxheap, (dist2, r2, c2))
+
+# Example usage:
+# sol = Solution()
+# result = sol.maximumSafenessFactor([[0, 0, 0], [0, 1, 0], [0, 0, 0]])
+# print(result)  # Example usage, adapt as needed
