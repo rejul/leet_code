@@ -43,7 +43,4 @@ class Solution:
                     dist2 = -min(dist, min_dist[(r2, c2)])
                     heapq.heappush(maxheap, (dist2, r2, c2))
 
-# Example usage:
-# sol = Solution()
-# result = sol.maximumSafenessFactor([[0, 0, 0], [0, 1, 0], [0, 0, 0]])
-# print(result)  # Example usage, adapt as needed
+
