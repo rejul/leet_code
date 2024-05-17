@@ -14,7 +14,7 @@ class Solution:
             min_dist = {}
             for r in range(N):
                 for c in range(N):
-                    if grid[r][c] == 1:
+                    if grid[r][c]:
                         q.append([r, c, 0])
                         min_dist[(r, c)] = 0
             while q:  # giving values to each column based on closeness to thief - bfs
