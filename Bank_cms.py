@@ -11,8 +11,6 @@ def add_customer():
         if acc_type not in ['savings', 'current']:
             print("Error: Invalid account type. Please enter 'savings' or 'current'.")
             return
-        if acc_type == 'savings':
-
         balance = float(input("Enter initial balance: "))
         min_balance = float(input("Enter minimum balance: "))
         if balance < min_balance:
